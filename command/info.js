@@ -19,6 +19,18 @@ module.exports = () => {
   log(`系统内存使用率： ${((totalMem - freeMem) / totalMem).toFixed(4) * 100}%`);
   log(`系统本次已正常运行： ${dealTime(time)}`);
   log('\n');
+  log(chalk.bold.blue('CPU信息：'));
+  const cpus = os.cpus();
+  cpus.map((cpu, index) => {
+    console.log(cpu);
+    const { times } = cpu;
+    console.log(`cpu${index}：`);
+    console.log(`型号：${cpu.model}`);
+    console.log(`频率：${cpu.speed}MHz`);
+    console.log(`使用率：${((1 - times.idle / (times.idle + times.user + times.nice + times.sys + times.irq)) * 100).toFixed(2)}%`);
+    return cpu;
+  });
+  log('\n');
   log(chalk.bold.blue('用户信息'));
   const userInfo = os.userInfo();
   Object.keys(userInfo).map((item) => {
